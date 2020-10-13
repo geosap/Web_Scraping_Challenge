@@ -1,7 +1,7 @@
 # import dependencies
 from flask import Flask, render_template, redirect
 from flask_pymongo import PyMongo
-import scrape_mars
+from scrape_mars import scrape_all
 import os
 
 # Create flask app
@@ -26,12 +26,8 @@ def scrape():
     
     # Run scraped functions
     mars_scrape = mongo.db.mars_scrape
-    mars_news = scrape_mars.scrape_news()
-    feature_images = scrape_mars.scrape_images()
-    mars_facts = scrape_mars.scrape_facts()
-    mars_hemi_images = scrape_mars.scrape_hemisphere()
-    print(mars_facts)
-    mars_scrape.update({}, mars_facts,upsert=True)
+    mars_data = scrape_all() 
+    mars_scrape.update({}, mars_data,upsert=True)
 
     return redirect("/", code=302)
 
